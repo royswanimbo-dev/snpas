@@ -1,0 +1,206 @@
+@extends('layouts.app')
+
+@section('title', 'Formulir PPDB - Siswa')
+
+@section('custom_navbar')
+<nav class="bg-white/90 backdrop-blur border-b border-slate-200 sticky top-0 z-40">
+    <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+        <a href="{{ route('siswa.dashboard') }}" class="flex items-center gap-2 text-slate-700 hover:text-blue-600 transition-colors">
+            <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center shadow-md">
+                <i class="fas fa-arrow-left text-white text-xs"></i>
+            </div>
+            <span class="font-semibold text-sm hidden sm:inline">Kembali</span>
+        </a>
+        <div class="flex items-center gap-3">
+            <span class="px-4 py-1.5 bg-blue-50 text-blue-700 text-xs font-bold rounded-full border border-blue-100">
+                <i class="fas fa-shield-halved mr-1"></i>Formulir PPDB 2025
+            </span>
+            <div class="dropdown">
+                <button class="flex items-center gap-2 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors" data-bs-toggle="dropdown">
+                    <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+                        {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                    </div>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end shadow-xl border border-slate-100 rounded-xl mt-2 py-2 min-w-[180px]">
+                    <li><a class="dropdown-item py-2" href="{{ route('siswa.dashboard') }}"><i class="fas fa-home mr-2 text-blue-500 w-4"></i>Dashboard</a></li>
+                    <li><hr class="dropdown-divider mx-3"></li>
+                    <li>
+                        <a class="dropdown-item text-red-600 py-2" href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                            <i class="fas fa-sign-out-alt mr-2 w-4"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="hidden">@csrf</form>
+        </div>
+    </div>
+</nav>
+@endsection
+
+@push('styles')
+<style>
+.wz-step{display:none;opacity:0;transform:translateY(20px);transition:all .4s cubic-bezier(.4,0,.2,1)}
+.wz-step.active{display:block;opacity:1;transform:translateY(0)}
+.step-dot{transition:all .3s ease}
+.step-dot.done{background:#10b981!important;border-color:#10b981!important;color:#fff!important}
+.step-dot.current{background:#3b82f6!important;border-color:#3b82f6!important;color:#fff!important;box-shadow:0 0 0 4px rgba(59,130,246,.25)}
+.line-fill{transition:width .5s ease}
+.inp:focus{box-shadow:0 0 0 3px rgba(59,130,246,.15);border-color:#3b82f6}
+.inp.err{border-color:#ef4444;box-shadow:0 0 0 3px rgba(239,68,68,.15)}
+.hero-pattern{background:linear-gradient(135deg,#dbeafe 0%,#e0e7ff 100%)}
+.file-box{border:2px dashed #cbd5e1;transition:all .25s ease;cursor:pointer}
+.file-box:hover{border-color:#3b82f6;background:#eff6ff}
+.file-box.ok{border-color:#10b981;background:#ecfdf5}
+.fmsg{color:#ef4444;font-size:.75rem;margin-top:.25rem;display:none}
+.fmsg.show{display:block}
+.overlay{position:fixed;inset:0;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);z-index:9999;display:none;align-items:center;justify-content:center;flex-direction:column}
+.overlay.on{display:flex}
+.spin{width:48px;height:48px;border:4px solid #dbeafe;border-top-color:#3b82f6;border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (max-width:640px){
+  .step-dot{width:2.25rem;height:2.25rem;font-size:.875rem;border-width:3px}
+  .step-label{font-size:.65rem}
+  .line-top{top:1.1rem}
+}
+</style>
+@endpush
+
+@section('content')
+<div class="min-h-screen hero-pattern pb-20">
+    <div class="relative overflow-hidden bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white">
+        <div class="max-w-6xl mx-auto px-4 py-8 sm:py-10 relative z-10 text-center">
+            <div class="w-14 h-14 sm:w-16 sm:h-16 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                <i class="fas fa-clipboard-check text-2xl sm:text-3xl text-white"></i>
+            </div>
+            <h1 class="text-xl sm:text-2xl md:text-3xl font-bold mb-2">Formulir Pendaftaran PPDB</h1>
+            <p class="text-blue-100 text-xs sm:text-sm md:text-base max-w-lg mx-auto">Lengkapi data pendaftaran SMP Negeri Pirime dengan teliti.</p>
+        </div>
+    </div>
+
+    <div class="max-w-6xl mx-auto px-3 sm:px-4 -mt-5 sm:-mt-6 relative z-20">
+        @if(session('sukses'))
+        <div class="bg-emerald-50 border border-emerald-200 rounded-2xl p-4 sm:p-5 mb-5 sm:mb-6 flex items-center gap-3 sm:gap-4 shadow-sm">
+            <i class="fas fa-check-circle text-emerald-600 text-lg sm:text-xl"></i>
+            <div>
+                <p class="text-emerald-800 font-bold text-sm sm:text-base">Berhasil!</p>
+                <p class="text-emerald-600 text-xs sm:text-sm">{{ session('sukses') }}</p>
+            </div>
+        </div>
+        @endif
+
+        @if($errors->any())
+        <div class="bg-red-50 border border-red-200 rounded-2xl p-4 sm:p-5 mb-5 sm:mb-6 shadow-sm">
+            <div class="flex items-start gap-3 sm:gap-4">
+                <i class="fas fa-exclamation-circle text-red-600 text-lg sm:text-xl mt-0.5"></i>
+                <div>
+                    <p class="text-red-800 font-bold text-sm sm:text-base">Terjadi kesalahan</p>
+                    <ul class="text-red-600 text-xs sm:text-sm list-disc list-inside mt-1">
+                        @foreach($errors->all() as $e)<li>{{ $e }}</li>@endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+        @endif
+
+        <!-- Stepper -->
+        <div class="bg-white/80 backdrop-blur rounded-2xl sm:rounded-3xl shadow-lg p-4 sm:p-6 mb-6 sm:mb-8">
+            <div class="flex items-center justify-between relative">
+                @php $labels=['Data Diri','Orang Tua','Sekolah','Berkas']; @endphp
+                @foreach($labels as $i=>$lbl)
+                    @php $num=$i+1; @endphp
+                    <div class="flex flex-col items-center relative z-10" style="width:25%">
+                        <div id="dot{{$num}}" class="step-dot w-10 h-10 sm:w-12 sm:h-12 rounded-full border-4 border-slate-200 bg-white text-slate-400 flex items-center justify-center font-bold mb-1 sm:mb-2 text-sm sm:text-base">
+                            <span class="sn">{{$num}}</span>
+                            <i class="fas fa-check sc hidden text-xs"></i>
+                        </div>
+                        <span class="text-[10px] sm:text-xs font-bold text-slate-500 uppercase step-label">{{$lbl}}</span>
+                    </div>
+                @endforeach
+                <div class="absolute top-5 sm:top-6 left-0 w-full h-1 bg-slate-200 -z-0 line-top">
+                    <div id="line-progress" class="line-fill h-full bg-blue-500" style="width:0%"></div>
+                </div>
+            </div>
+        </div>
+
+        <form id="wizardForm" action="{{ route('siswa.pendaftaran.simpan') }}" method="POST" enctype="multipart/form-data">
+            @csrf
+
+            <!-- STEP 1: DATA DIRI -->
+            <div id="step1" class="wz-step active">
+                <div class="bg-white rounded-2xl sm:rounded-3xl shadow-sm p-4 sm:p-6 lg:p-10 space-y-5 sm:space-y-6">
+                    <h2 class="text-lg sm:text-xl font-bold text-slate-800 border-b pb-3 sm:pb-4 flex items-center gap-2"><i class="fas fa-user-circle text-blue-600"></i>Data Pribadi</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
+                        <div class="space-y-1">
+                            <label class="block text-xs sm:text-sm font-bold text-slate-700">Nama Lengkap <span class="text-red-500">*</span></label>
+                            <input type="text" name="nama_lengkap" id="f_nama_lengkap" value="{{ old('nama_lengkap',$pendaftar->nama_lengkap??'') }}" required class="inp w-full px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base border border-slate-300 rounded-xl sm:rounded-2xl outline-none" placeholder="Sesuai KK">
+                            <p class="fmsg" id="e_nama_lengkap">Wajib diisi</p>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-xs sm:text-sm font-bold text-slate-700">NIK <span class="text-red-500">*</span></label>
+                            <input type="text" name="nik" id="f_nik" value="{{ old('nik',$pendaftar->nik??'') }}" required maxlength="16" class="inp w-full px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base border border-slate-300 rounded-xl sm:rounded-2xl outline-none" placeholder="16 digit NIK" oninput="this.value=this.value.replace(/\D/g,'')">
+                            <p class="fmsg" id="e_nik">Wajib 16 digit angka</p>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-xs sm:text-sm font-bold text-slate-700">NISN</label>
+                            <input type="text" name="nisn" value="{{ old('nisn',$pendaftar->nisn??'') }}" maxlength="10" class="inp w-full px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base border border-slate-300 rounded-xl sm:rounded-2xl outline-none" placeholder="10 digit NISN" oninput="this.value=this.value.replace(/\D/g,'')">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-xs sm:text-sm font-bold text-slate-700">Jenis Kelamin <span class="text-red-500">*</span></label>
+                            <select name="jenis_kelamin" id="f_jenis_kelamin" required class="inp w-full px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base border border-slate-300 rounded-xl sm:rounded-2xl outline-none bg-white">
+                                <option value="">Pilih</option>
+                                <option value="Laki-laki" {{ old('jenis_kelamin',$pendaftar->jenis_kelamin??'')=='Laki-laki'?'selected':'' }}>Laki-laki</option>
+                                <option value="Perempuan" {{ old('jenis_kelamin',$pendaftar->jenis_kelamin??'')=='Perempuan'?'selected':'' }}>Perempuan</option>
+                            </select>
+                            <p class="fmsg" id="e_jenis_kelamin">Pilih jenis kelamin</p>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-xs sm:text-sm font-bold text-slate-700">Agama <span class="text-red-500">*</span></label>
+                            <select name="agama" id="f_agama" required class="inp w-full px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base border border-slate-300 rounded-xl sm:rounded-2xl outline-none bg-white">
+                                <option value="">Pilih Agama</option>
+                                <option value="Islam" {{ old('agama',$pendaftar->agama??'')=='Islam'?'selected':'' }}>Islam</option>
+                                <option value="Kristen" {{ old('agama',$pendaftar->agama??'')=='Kristen'?'selected':'' }}>Kristen</option>
+                                <option value="Katolik" {{ old('agama',$pendaftar->agama??'')=='Katolik'?'selected':'' }}>Katolik</option>
+                                <option value="Hindu" {{ old('agama',$pendaftar->agama??'')=='Hindu'?'selected':'' }}>Hindu</option>
+                                <option value="Buddha" {{ old('agama',$pendaftar->agama??'')=='Buddha'?'selected':'' }}>Buddha</option>
+                                <option value="Konghucu" {{ old('agama',$pendaftar->agama??'')=='Konghucu'?'selected':'' }}>Konghucu</option>
+                            </select>
+                            <p class="fmsg" id="e_agama">Pilih agama</p>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-xs sm:text-sm font-bold text-slate-700">No. HP Siswa</label>
+                            <input type="text" name="no_hp_siswa" value="{{ old('no_hp_siswa',$pendaftar->no_hp_siswa??'') }}" class="inp w-full px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base border border-slate-300 rounded-xl sm:rounded-2xl outline-none" placeholder="08xxxxxxxxxx" oninput="this.value=this.value.replace(/\D/g,'')">
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-xs sm:text-sm font-bold text-slate-700">Tempat Lahir <span class="text-red-500">*</span></label>
+                            <input type="text" name="tempat_lahir" id="f_tempat_lahir" value="{{ old('tempat_lahir',$pendaftar->tempat_lahir??'') }}" required class="inp w-full px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base border border-slate-300 rounded-xl sm:rounded-2xl outline-none" placeholder="Kota/Kabupaten">
+                            <p class="fmsg" id="e_tempat_lahir">Wajib diisi</p>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-xs sm:text-sm font-bold text-slate-700">Tanggal Lahir <span class="text-red-500">*</span></label>
+                            <input type="date" name="tanggal_lahir" id="f_tanggal_lahir" value="{{ old('tanggal_lahir',isset($pendaftar->tanggal_lahir)?$pendaftar->tanggal_lahir->format('Y-m-d'):'') }}" required class="inp w-full px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base border border-slate-300 rounded-xl sm:rounded-2xl outline-none">
+                            <p class="fmsg" id="e_tanggal_lahir">Pilih tanggal lahir</p>
+                        </div>
+                        <div class="space-y-1 md:col-span-2">
+                            <label class="block text-xs sm:text-sm font-bold text-slate-700">Alamat Lengkap <span class="text-red-500">*</span></label>
+                            <textarea name="alamat" id="f_alamat" rows="3" required class="inp w-full px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base border border-slate-300 rounded-xl sm:rounded-2xl outline-none" placeholder="Alamat lengkap sesuai KK">{{ old('alamat',$pendaftar->alamat??'') }}</textarea>
+                            <p class="fmsg" id="e_alamat">Wajib diisi</p>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-xs sm:text-sm font-bold text-slate-700">Desa/Kelurahan <span class="text-red-500">*</span></label>
+                            <input type="text" name="desa" id="f_desa" value="{{ old('desa',$pendaftar->desa??'') }}" required class="inp w-full px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base border border-slate-300 rounded-xl sm:rounded-2xl outline-none" placeholder="Desa/Kelurahan">
+                            <p class="fmsg" id="e_desa">Wajib diisi</p>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-xs sm:text-sm font-bold text-slate-700">Kecamatan <span class="text-red-500">*</span></label>
+                            <input type="text" name="kecamatan" id="f_kecamatan" value="{{ old('kecamatan',$pendaftar->kecamatan??'') }}" required class="inp w-full px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base border border-slate-300 rounded-xl sm:rounded-2xl outline-none" placeholder="Kecamatan">
+                            <p class="fmsg" id="e_kecamatan">Wajib diisi</p>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-xs sm:text-sm font-bold text-slate-700">Kabupaten/Kota <span class="text-red-500">*</span></label>
+                            <input type="text" name="kabupaten" id="f_kabupaten" value="{{ old('kabupaten',$pendaftar->kabupaten??'') }}" required class="inp w-full px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base border border-slate-300 rounded-xl sm:rounded-2xl outline-none" placeholder="Kabupaten/Kota">
+                            <p class="fmsg" id="e_kabupaten">Wajib diisi</p>
+                        </div>
+                        <div class="space-y-1">
+                            <label class="block text-xs sm:text-sm font-bold text-slate-700">Provinsi <span class="text-red-500">*</span></label>
+                            <input type="text" name="provinsi" id="f_provinsi" value="{{ old('provinsi',$pendaftar->provinsi??'') }}" required class="inp w-full px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base border border-slate-300 rounded-xl sm:rounded-2xl outline-none" placeholder="Provinsi">
+                            <p class="fmsg" id="

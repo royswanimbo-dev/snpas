@@ -1,0 +1,23 @@
+{
+  "name": "SMPN 1 Pirime - PPDB Online",
+  "short_name": "SMPN Pirime",
+  "description": "Penerimaan Peserta Didik Baru SMPN 1 Pirime",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1e3a8a",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "images/logo/logo.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "images/logo/logo.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
+

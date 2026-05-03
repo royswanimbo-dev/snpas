@@ -1,0 +1,66 @@
+            <!-- STEP 2: ORANG TUA -->
+            <div id="step2" class="wz-step">
+                <div class="bg-white rounded-3xl shadow-sm p-6 sm:p-10 space-y-6">
+                    <h2 class="text-xl font-bold text-slate-800 border-b pb-4 flex items-center gap-2"><i class="fas fa-users text-emerald-600"></i>Data Orang Tua</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Ayah -->
+                        <div class="bg-blue-50/30 p-6 rounded-2xl border border-blue-100 space-y-4">
+                            <label class="block font-bold text-blue-800 text-lg mb-3 flex items-center gap-2"><i class="fas fa-male text-blue-500"></i>Data Ayah</label>
+                            <div class="space-y-1">
+                                <label class="block text-sm font-bold text-slate-700">Nama Ayah <span class="text-red-500">*</span></label>
+                                <input type="text" name="nama_ayah" id="f_nama_ayah" value="{{ old('nama_ayah',$pendaftar->nama_ayah??'') }}" required class="inp w-full px-5 py-3 border border-slate-300 rounded-2xl outline-none" placeholder="Nama lengkap ayah">
+                                <p class="fmsg" id="e_nama_ayah">Wajib diisi</p>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="block text-sm font-bold text-slate-700">Pendidikan Ayah</label>
+                                <select name="pendidikan_ayah" class="inp w-full px-5 py-3 border border-slate-300 rounded-2xl outline-none bg-white">
+                                    <option value="">Pilih Pendidikan</option>
+                                    @php $opts=['SD/Sederajat','SMP/Sederajat','SMA/Sederajat','D1/D2','D3','S1','S2','S3']; @endphp
+                                    @foreach($opts as $o)<option value="{{$o}}" {{ old('pendidikan_ayah',$pendaftar->pendidikan_ayah??'')==$o?'selected':'' }}>{{$o}}</option>@endforeach
+                                </select>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="block text-sm font-bold text-slate-700">Pekerjaan Ayah</label>
+                                <input type="text" name="pekerjaan_ayah" value="{{ old('pekerjaan_ayah',$pendaftar->pekerjaan_ayah??'') }}" class="inp w-full px-5 py-3 border border-slate-300 rounded-2xl outline-none" placeholder="Contoh: Petani, PNS, Wiraswasta">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="block text-sm font-bold text-slate-700">No. HP Ayah</label>
+                                <input type="text" name="no_hp_ayah" value="{{ old('no_hp_ayah',$pendaftar->no_hp_ayah??'') }}" class="inp w-full px-5 py-3 border border-slate-300 rounded-2xl outline-none" placeholder="08xxxxxxxxxx" oninput="this.value=this.value.replace(/\D/g,'')">
+                            </div>
+                        </div>
+                        <!-- Ibu -->
+                        <div class="bg-pink-50/30 p-6 rounded-2xl border border-pink-100 space-y-4">
+                            <label class="block font-bold text-pink-800 text-lg mb-3 flex items-center gap-2"><i class="fas fa-female text-pink-500"></i>Data Ibu</label>
+                            <div class="space-y-1">
+                                <label class="block text-sm font-bold text-slate-700">Nama Ibu <span class="text-red-500">*</span></label>
+                                <input type="text" name="nama_ibu" id="f_nama_ibu" value="{{ old('nama_ibu',$pendaftar->nama_ibu??'') }}" required class="inp w-full px-5 py-3 border border-slate-300 rounded-2xl outline-none" placeholder="Nama lengkap ibu">
+                                <p class="fmsg" id="e_nama_ibu">Wajib diisi</p>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="block text-sm font-bold text-slate-700">Pendidikan Ibu</label>
+                                <select name="pendidikan_ibu" class="inp w-full px-5 py-3 border border-slate-300 rounded-2xl outline-none bg-white">
+                                    <option value="">Pilih Pendidikan</option>
+                                    @foreach($opts as $o)<option value="{{$o}}" {{ old('pendidikan_ibu',$pendaftar->pendidikan_ibu??'')==$o?'selected':'' }}>{{$o}}</option>@endforeach
+                                </select>
+                            </div>
+                            <div class="space-y-1">
+                                <label class="block text-sm font-bold text-slate-700">Pekerjaan Ibu</label>
+                                <input type="text" name="pekerjaan_ibu" value="{{ old('pekerjaan_ibu',$pendaftar->pekerjaan_ibu??'') }}" class="inp w-full px-5 py-3 border border-slate-300 rounded-2xl outline-none" placeholder="Contoh: Ibu Rumah Tangga, Guru">
+                            </div>
+                            <div class="space-y-1">
+                                <label class="block text-sm font-bold text-slate-700">No. HP Ibu</label>
+                                <input type="text" name="no_hp_ibu" value="{{ old('no_hp_ibu',$pendaftar->no_hp_ibu??'') }}" class="inp w-full px-5 py-3 border border-slate-300 rounded-2xl outline-none" placeholder="08xxxxxxxxxx" oninput="this.value=this.value.replace(/\D/g,'')">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-1">
+                        <label class="block text-sm font-bold text-slate-700">Penghasilan Orang Tua</label>
+                        <select name="penghasilan_orangtua" class="inp w-full px-5 py-3 border border-slate-300 rounded-2xl outline-none bg-white">
+                            <option value="">Pilih Rentang Penghasilan</option>
+                            @php $ph=['< Rp 1.000.000','Rp 1.000.000 - Rp 3.000.000','Rp 3.000.000 - Rp 5.000.000','> Rp 5.000.000']; @endphp
+                            @foreach($ph as $p)<option value="{{$p}}" {{ old('penghasilan_orangtua',$pendaftar->penghasilan_orangtua??'')==$p?'selected':'' }}>{{$p}}</option>@endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+
