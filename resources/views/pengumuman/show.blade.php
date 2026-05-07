@@ -11,13 +11,25 @@
             Kembali ke Pengumuman
         </a>
 
-        <article class="bg-white rounded-3xl shadow-2xl overflow-hidden">
-            @if($pengumuman->gambar)
-                <img src="{{ asset('storage/pengumuman/' . $pengumuman->gambar) }}" 
-                     alt="{{ $pengumuman->judul }}" 
-                     class="w-full h-96 object-cover">
-            @endif
-            
+        <article class="bg-white rounded-3xl shadow-2xl overflow-hidden border border-white/60">
+            <div class="relative">
+                @if($pengumuman->gambar)
+                    <div class="h-96 sm:h-[420px] overflow-hidden">
+                        <img
+                            src="{{ \Illuminate\Support\Facades\Storage::url($pengumuman->gambar) }}"
+                            alt="{{ $pengumuman->judul }}"
+                            class="w-full h-full object-cover"
+                            loading="lazy"
+                            onerror="this.onerror=null;this.src='{{ asset('images/no-image.png') }}';" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                    </div>
+                @else
+                    <div class="h-96 sm:h-[420px] bg-gray-100 flex items-center justify-center">
+                        <img src="{{ asset('images/no-image.png') }}" alt="Tidak ada gambar" class="max-w-xs opacity-80" />
+                    </div>
+                @endif
+            </div>
+
             <div class="p-12 lg:p-16">
                 <!-- Badge -->
                 <span class="inline-flex items-center px-4 py-2 rounded-full text-sm font-bold bg-gradient-to-r
@@ -34,11 +46,12 @@
                 </h1>
 
                 <!-- Meta -->
-                <div class="flex items-center text-sm text-gray-500 mb-12">
-                    <div class="flex items-center mr-8">
+                <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-10">
+                    <div class="flex items-center text-sm text-gray-500">
                         <i class="fas fa-calendar mr-2"></i>
                         {{ $pengumuman->tanggal_publish ? $pengumuman->tanggal_publish->translatedFormat('d F Y H:i') : $pengumuman->created_at->translatedFormat('d F Y H:i') }}
                     </div>
+
                     @if($pengumuman->aktif)
                         <span class="inline-flex items-center px-3 py-1 bg-green-100 text-green-800 rounded-full text-xs font-medium">
                             <i class="fas fa-eye mr-1"></i>Aktif
@@ -55,3 +68,4 @@
     </div>
 </div>
 @endsection
+

@@ -21,8 +21,8 @@ class AdminController extends Controller
             'sudahDiverifikasi' => Pendaftar::where('status', '!=', 'Menunggu')->count(),
             'diterima' => Pendaftar::where('status', 'Diterima')->count(),
             'ditolak' => Pendaftar::where('status', 'Ditolak')->count(),
-            'pendaftarTerbaru' => Pendaftar::with('user')->latest()->take(5)->get(),
             'profile' => $profile,
+            'pendaftarTerbaru' => Pendaftar::with('user')->latest()->take(8)->get(),
         ]);
     }
 
@@ -52,18 +52,30 @@ class AdminController extends Controller
 
     public function laporan()
     {
-        $pendaftars = Pendaftar::all();
+        $pendaftars = Pendaftar::with('user')->latest('created_at')->get();
         $profile = Profile::first();
         return view('admin.laporan', compact('pendaftars', 'profile'));
     }
 
+    public function exportLaporanExcel()
+    {
+        $pendaftars = Pendaftar::with('user')->latest('created_at')->get();
+
+        return \Maatwebsite\Excel\Facades\Excel::download(
+            new \App\Exports\LaporanPpdbExport($pendaftars),
+            'laporan_ppdb_' . now()->format('Y-m-d') . '.xlsx'
+        );
+    }
+
+
     // Gallery Methods
     public function gallery()
     {
-        $galleries = Gallery::with('kategori')->terbaru()->get();
+        $galleries = Gallery::terbaru()->get();
         $profile = Profile::first();
         return view('admin.gallery', compact('galleries', 'profile'));
     }
+
 
     public function createGallery()
     {
@@ -282,19 +294,19 @@ public function updateProfil(Request $request)
                 Storage::disk('public')->delete('profiles/' . $profile->foto_kepsek);
             }
             
+
             $filename = 'kepsek-' . time() . '.' . $request->file('foto_kepsek')->getClientOriginalExtension();
-            $path = $request->file('foto_kepsek')->storeAs('public/profiles', $filename);
-            $profile->foto_kepsek = basename($path);
+            // simpan ke storage/app/public/profiles/
+            $request->file('foto_kepsek')->storeAs('profiles', $filename, 'public');
+            // DB simpan nama file saja
+            $profile->foto_kepsek = $filename;
         }
 
         // Prepare data - convert misi line breaks to array
         $data = $request->except(['foto_kepsek']);
         
-// Rename 'sambutan' to 'sambutan_kepsek' if exists
-        if (isset($data['sambutan'])) {
-            $data['sambutan_kepsek'] = $data['sambutan'];
-            unset($data['sambutan']);
-        }
+        // Save sambutan_kepsek
+        $data['sambutan_kepsek'] = $data['sambutan_kepsek'] ?? $request->sambutan_kepsek ?? '';
         
         // Convert misi to JSON array
         if (isset($data['misi']) && !empty($data['misi'])) {

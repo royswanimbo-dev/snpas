@@ -129,8 +129,15 @@
                 @forelse($pendaftarTerbaru as $pendaftar)
                     <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                         <div class="flex items-center">
-                            <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-semibold mr-3">
-                                {{ substr($pendaftar->nama_lengkap, 0, 1) }}
+                            <div class="w-10 h-10 mr-3">
+                                @if($pendaftar->foto_profil)
+                                    <img src="{{ asset('storage/' . $pendaftar->foto_profil) }}" alt="Foto {{ $pendaftar->nama_lengkap }}"
+                                         class="w-10 h-10 rounded-full object-cover border border-gray-200">
+                                @else
+                                    <div class="w-10 h-10 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center text-white font-bold text-xs border border-gray-200">
+                                        {{ strtoupper(substr($pendaftar->nama_lengkap, 0, 1)) }}
+                                    </div>
+                                @endif
                             </div>
                             <div>
                                 <p class="font-medium text-gray-800">{{ $pendaftar->nama_lengkap }}</p>

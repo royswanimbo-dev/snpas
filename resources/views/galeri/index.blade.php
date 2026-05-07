@@ -3,251 +3,493 @@
 @section('title', 'Galeri Foto - SMPN 1 Pirime')
 
 @section('content')
-@php
-  use Illuminate\Support\Facades\Storage;
-@endphp
-<!-- Hero Section -->
-<section class="pt-28 pb-20 relative bg-gradient-to-br from-gray-900 via-blue-900/20 to-gray-900 text-white overflow-hidden">
-    <div class="absolute inset-0 bg-[url('/images/bg/smp.png')] bg-cover bg-center bg-no-repeat"></div>
-    <div class="relative z-10 py-24 px-4 max-w-7xl mx-auto text-center">
-        <h1 class="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent drop-shadow-2xl">
-            <i class="fas fa-images mr-4"></i>Galeri
-        </h1>
-        <p class="text-xl md:text-2xl opacity-90 max-w-3xl mx-auto leading-relaxed">
-            Kenang-kenangan kegiatan dan prestasi siswa SMPN 1 Pirime
-        </p>
-    </div>
-</section>
 
-<!-- Gallery Grid -->
-<section class="py-20 bg-white/50 backdrop-blur-sm">
-    <div class="max-w-7xl mx-auto px-6">
-        <div class="text-center mb-16">
-            <h2 class="text-4xl md:text-5xl font-bold text-gray-800 mb-6">Kumpulan Foto Terbaik</h2>
-            <p class="text-xl text-gray-600 max-w-2xl mx-auto">Lihat momen-momen indah dari aktivitas sekolah kami</p>
+@php
+use Illuminate\Support\Facades\Storage;
+@endphp
+
+<!-- HERO SECTION -->
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-black text-white">
+
+    <!-- Background Image -->
+    <div class="absolute inset-0">
+
+        <img src="/images/bg/smp.png"
+             alt="SMP Negeri 1 Pirime"
+             class="w-full h-full object-cover scale-110 animate-bg">
+
+    </div>
+
+    <!-- Overlay + Gradient: dibuat tipis supaya gambar bg tetap tampil kilat jelas -->
+    <div class="absolute inset-0 bg-black/10"></div>
+
+    <div class="absolute inset-0 bg-gradient-to-br from-blue-950/20 via-black/10 to-cyan-950/20"></div>
+
+    <!-- Glow -->
+    <div class="absolute -top-40 -left-40 w-[600px] h-[600px] bg-cyan-500/20 rounded-full blur-[150px] animate-pulse"></div>
+
+    <div class="absolute bottom-0 right-0 w-[600px] h-[600px] bg-blue-600/20 rounded-full blur-[150px] animate-pulse"></div>
+
+    <!-- Grid -->
+    
+
+    <!-- Floating Blur -->
+    <div class="absolute top-32 right-20 w-40 h-40 bg-cyan-400/20 rounded-full blur-3xl animate-float"></div>
+
+    <div class="absolute bottom-32 left-20 w-52 h-52 bg-blue-500/20 rounded-full blur-3xl animate-float2"></div>
+
+    <!-- Content -->
+    <div class="relative z-20 text-center px-6 max-w-6xl mx-auto">
+
+        <!-- Badge -->
+        <div class="inline-flex items-center gap-3 px-6 py-3 rounded-full bg-white/10 border border-white/20 backdrop-blur-2xl shadow-2xl mb-10">
+
+            <div class="w-3 h-3 rounded-full bg-cyan-400 animate-ping"></div>
+
+            <span class="uppercase tracking-[5px] text-sm md:text-base font-bold">
+                SMP Negeri 1 Pirime
+            </span>
+
         </div>
 
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12" id="gallery-grid">
-@forelse($galleries as $index => $gallery)
-            <div class="group relative overflow-hidden rounded-3xl shadow-2xl hover:shadow-3xl transition-all duration-500 hover:scale-105 bg-white/80 backdrop-blur-sm hover:bg-white">
-                <div class="relative h-64 overflow-hidden">
-                    <img src="{{ Storage::url($gallery->image) }}" 
+        <!-- Title -->
+        <h1 class="hero-title text-5xl md:text-7xl lg:text-8xl font-black leading-tight mb-8">
+
+            Galeri
+            <span class="block bg-gradient-to-r from-cyan-300 via-blue-400 to-indigo-400 bg-clip-text text-transparent">
+
+                Kegiatan Sekolah
+
+            </span>
+
+        </h1>
+
+        <!-- Description -->
+        <p class="max-w-3xl mx-auto text-lg md:text-2xl text-gray-200 leading-relaxed mb-12">
+
+            Dokumentasi kegiatan belajar, prestasi siswa,
+            olahraga, seminar, lomba, dan berbagai aktivitas
+            terbaik SMP Negeri 1 Pirime.
+
+        </p>
+
+        <!-- Buttons -->
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-5">
+
+            <a href="#gallery"
+               class="group px-8 py-4 rounded-2xl bg-gradient-to-r from-cyan-400 via-blue-500 to-indigo-600 hover:scale-105 transition-all duration-300 shadow-[0_0_50px_rgba(59,130,246,0.5)] font-bold text-lg">
+
+                <i class="fas fa-images mr-2 group-hover:rotate-12 transition-all"></i>
+                Jelajahi Galeri
+
+            </a>
+
+            <a href="/kontak"
+               class="px-8 py-4 rounded-2xl border border-white/30 bg-white/10 backdrop-blur-xl hover:bg-white/20 transition-all duration-300 font-bold text-lg">
+
+                <i class="fas fa-phone-alt mr-2"></i>
+                Hubungi Kami
+
+            </a>
+
+        </div>
+
+        <!-- Scroll -->
+        <div class="absolute left-1/2 -translate-x-1/2 bottom-10 animate-bounce">
+
+            <a href="#gallery"
+               class="w-14 h-14 flex items-center justify-center rounded-full bg-white/10 border border-white/20 backdrop-blur-xl">
+
+                <i class="fas fa-chevron-down text-xl text-white"></i>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- GALLERY -->
+<section id="gallery" class="relative py-24 bg-slate-100 overflow-hidden">
+
+    <!-- Background Glow -->
+    <div class="absolute top-0 left-0 w-[500px] h-[500px] bg-cyan-300/20 rounded-full blur-[120px]"></div>
+
+    <div class="absolute bottom-0 right-0 w-[500px] h-[500px] bg-blue-400/20 rounded-full blur-[120px]"></div>
+
+    <div class="relative max-w-7xl mx-auto px-6">
+
+        <!-- Heading -->
+        <div class="text-center mb-20">
+
+            <div class="inline-flex items-center gap-3 px-5 py-2 rounded-full bg-blue-100 text-blue-700 font-bold mb-6 shadow">
+
+                <i class="fas fa-camera-retro"></i>
+                Galeri Sekolah
+
+            </div>
+
+            <h2 class="text-4xl md:text-6xl font-black text-slate-800 mb-6">
+
+                Momen Terbaik Sekolah
+
+            </h2>
+
+            <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+
+                Kumpulan dokumentasi kegiatan dan prestasi siswa
+                SMP Negeri 1 Pirime.
+
+            </p>
+
+        </div>
+
+        <!-- Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+
+            @forelse($galleries as $index => $gallery)
+
+            <div class="group relative rounded-[30px] overflow-hidden bg-white shadow-lg hover:shadow-[0_25px_80px_rgba(0,0,0,0.2)] transition-all duration-500 hover:-translate-y-4">
+
+                <!-- Image -->
+                <div class="relative overflow-hidden h-72">
+
+                    <img src="{{ Storage::url($gallery->image) }}"
                          alt="{{ $gallery->title }}"
-                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                         loading="lazy">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-                <div class="p-6">
-<h3 class="font-black text-2xl text-gray-900 mb-4 drop-shadow-md line-clamp-1 hover:text-blue-700 transition-all duration-300">{{ $gallery->title }}</h3>
-                    <p class="font-medium text-lg text-gray-700 leading-relaxed line-clamp-3 mb-6 shadow-sm p-3 bg-white/80 rounded-2xl">{{ $gallery->description ?? 'Deskripsi foto kegiatan sekolah.' }}</p>
-                    <div class="flex flex-col sm:flex-row gap-2 items-center justify-between">
-                        <div class="flex items-center text-xs text-gray-500 order-2 sm:order-1 flex-shrink-0">
-                            <i class="fas fa-calendar mr-2"></i>
-                            {{ $gallery->created_at->format('d M Y') }}
-                        </div>
-                        <button onclick="openLightbox({{ $index }})" 
-                                class="px-6 py-2.5 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white text-sm font-semibold rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-300 flex items-center order-1 sm:order-2 whitespace-nowrap group/btn">
-                            <i class="fas fa-eye mr-2 group-hover/btn:animate-pulse"></i>
-                            Baca Selengkapnya
-                        </button>
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+
+                    <!-- Overlay -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+
+                    <!-- Shine -->
+                    <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition duration-700 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full"></div>
+
+                    <!-- Expand -->
+                    <button onclick="openLightbox({{ $index }})"
+                            class="absolute top-4 right-4 w-12 h-12 rounded-2xl bg-white/20 backdrop-blur-xl text-white hover:bg-cyan-500 transition-all duration-300">
+
+                        <i class="fas fa-expand"></i>
+
+                    </button>
+
+                    <!-- Category -->
+                    <div class="absolute bottom-4 left-4">
+
+                        <span class="px-4 py-2 rounded-full bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xs font-bold shadow-xl">
+
+                            {{ $gallery->kategori ?? 'Galeri' }}
+
+                        </span>
+
                     </div>
+
                 </div>
-                {{-- Keep expand icon for hover --}}
-                <button onclick="openLightbox({{ $index }})" 
-                        class="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-300 w-12 h-12 bg-white/90 hover:bg-white rounded-2xl shadow-2xl hover:shadow-3xl flex items-center justify-center text-blue-600 hover:scale-110 z-10">
-                    <i class="fas fa-expand-arrows-alt text-xl"></i>
-                </button>
+
+                <!-- Content -->
+                <div class="p-6">
+
+                    <h3 class="text-2xl font-black text-slate-800 mb-3 line-clamp-1">
+
+                        {{ $gallery->title }}
+
+                    </h3>
+
+                    <p class="text-slate-600 leading-relaxed mb-6 line-clamp-3">
+
+                        {{ $gallery->description ?? 'Dokumentasi kegiatan sekolah SMPN 1 Pirime.' }}
+
+                    </p>
+
+                    <div class="flex items-center justify-between">
+
+                        <div class="flex items-center gap-2 text-sm text-gray-500">
+
+                            <i class="fas fa-calendar-alt text-cyan-500"></i>
+
+                            {{ $gallery->created_at->format('d M Y') }}
+
+                        </div>
+
+                        <button onclick="openLightbox({{ $index }})"
+                                class="px-5 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-semibold hover:scale-105 transition-all duration-300">
+
+                            Lihat
+
+                        </button>
+
+                    </div>
+
+                </div>
+
             </div>
+
             @empty
+
             <div class="col-span-full text-center py-32">
-                <i class="fas fa-images text-8xl text-gray-300 mb-8"></i>
-                <h3 class="text-3xl font-bold text-gray-500 mb-4">Belum ada foto galeri</h3>
-                <p class="text-xl text-gray-400">Silakan hubungi admin untuk menambahkan foto kegiatan</p>
+
+                <i class="fas fa-images text-8xl text-gray-300 mb-6"></i>
+
+                <h3 class="text-4xl font-black text-gray-500 mb-4">
+
+                    Belum Ada Galeri
+
+                </h3>
+
+                <p class="text-gray-400 text-lg">
+
+                    Silakan tambahkan dokumentasi kegiatan sekolah.
+
+                </p>
+
             </div>
+
             @endforelse
+
         </div>
 
         <!-- Pagination -->
-        <div class="flex justify-center">
+        <div class="mt-20 flex justify-center">
+
             {{ $galleries->links() }}
+
         </div>
+
     </div>
+
 </section>
 
-<!-- Modern Center Text Lightbox -->
-<div id="lightbox-modal" class="fixed inset-0 bg-gradient-to-br from-black via-gray-900/90 to-black z-[9999] hidden flex items-center justify-center p-6">
-    <button onclick="closeLightbox()" class="absolute top-8 right-8 w-16 h-16 bg-white/20 hover:bg-white/40 backdrop-blur-xl rounded-3xl flex items-center justify-center text-white text-2xl font-bold shadow-2xl hover:scale-110 transition-all z-20 border border-white/30">
+<!-- LIGHTBOX -->
+<div id="lightbox-modal"
+     class="fixed inset-0 bg-black/95 z-[9999] hidden items-center justify-center p-5">
+
+    <!-- Close -->
+    <button onclick="closeLightbox()"
+            class="absolute top-6 right-6 w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-xl text-white text-2xl hover:bg-red-500 transition-all z-50">
+
         &times;
+
     </button>
-    
-    <!-- Image -->
-    <div class="relative flex-1 max-w-6xl max-h-[95vh] flex items-center justify-center">
-    <img id="lightbox-img" src="" alt="" class="max-h-[90vh] max-w-[90vw] object-contain rounded-4xl shadow-4xl cursor-zoom-in hover:scale-105 transition-all duration-500 mx-auto">
-    </div>
-    
-    <!-- Center Text Overlay -->
-    <div class="absolute inset-0 flex flex-col justify-center items-center text-center px-8 max-w-4xl mx-auto z-10 pointer-events-none">
-        <div class="bg-black/60 backdrop-blur-2xl rounded-4xl p-12 max-h-[80vh] overflow-y-auto scrollbar-thin w-full max-w-3xl mx-8 shadow-4xl border border-white/20">
-            <div id="lightbox-counter" class="text-2xl font-black text-blue-400 mb-8 bg-white/20 px-6 py-3 rounded-3xl inline-block border border-blue-400/50 shadow-2xl"></div>
-            <h2 id="lightbox-title" class="text-4xl md:text-5xl lg:text-6xl font-black mb-8 bg-gradient-to-r from-white to-gray-200 bg-clip-text text-transparent drop-shadow-2xl leading-tight"></h2>
-            <div id="lightbox-desc" class="text-xl md:text-2xl lg:text-3xl font-medium text-gray-100 leading-10 prose prose-invert prose-headings:text-4xl prose-p:text-2xl max-h-[50vh] overflow-y-auto mx-auto scrollbar-thin scrollbar-thumb-white/50 hover:scrollbar-thumb-white scrollbar-track-black/50 p-8 prose-strong:text-white mb-12"></div>
-            <div class="flex items-center gap-8 text-lg opacity-90">
-                <span id="lightbox-kategori" class="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 text-white font-bold rounded-3xl shadow-xl"></span>
-                <span id="lightbox-date" class="flex items-center gap-3 px-6 py-3 bg-white/20 backdrop-blur-xl rounded-3xl font-semibold">
-                    <i class="fas fa-calendar-alt text-xl"></i>
-                    <span></span>
-                </span>
-            </div>
-            <button onclick="shareImage()" class="mt-12 px-12 py-6 bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white text-xl font-bold rounded-4xl shadow-2xl hover:shadow-4xl hover:scale-105 transition-all duration-300 pointer-events-auto backdrop-blur-xl border border-white/30">
-                <i class="fas fa-share-alt mr-3"></i>Bagikan Kisah Ini
-            </button>
-        </div>
-    </div>
-    
-    <button onclick="prevImage()" class="absolute left-12 top-1/2 -translate-y-1/2 w-20 h-20 md:w-24 md:h-24 bg-white/30 hover:bg-white/50 backdrop-blur-xl rounded-4xl flex items-center justify-center text-white text-3xl font-bold shadow-2xl hover:scale-125 transition-all duration-300 z-20 border border-white/40 hover:border-white/60">
+
+    <!-- Prev -->
+    <button onclick="prevImage()"
+            class="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-50 w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-xl text-white hover:bg-cyan-500 transition-all">
+
         <i class="fas fa-chevron-left"></i>
+
     </button>
-    <button onclick="nextImage()" class="absolute right-12 top-1/2 -translate-y-1/2 w-20 h-20 md:w-24 md:h-24 bg-white/30 hover:bg-white/50 backdrop-blur-xl rounded-4xl flex items-center justify-center text-white text-3xl font-bold shadow-2xl hover:scale-125 transition-all duration-300 z-20 border border-white/40 hover:border-white/60">
+
+    <!-- Next -->
+    <button onclick="nextImage()"
+            class="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-50 w-14 h-14 rounded-2xl bg-white/10 backdrop-blur-xl text-white hover:bg-cyan-500 transition-all">
+
         <i class="fas fa-chevron-right"></i>
+
     </button>
+
+    <!-- Content -->
+    <div class="max-w-7xl w-full grid lg:grid-cols-2 gap-10 items-center">
+
+        <!-- Image -->
+        <div>
+
+            <img id="lightbox-img"
+                 src=""
+                 class="w-full max-h-[80vh] object-contain rounded-[30px] shadow-[0_20px_80px_rgba(0,0,0,0.8)]">
+
+        </div>
+
+        <!-- Info -->
+        <div class="text-white">
+
+            <div id="lightbox-counter"
+                 class="inline-block px-5 py-2 rounded-full bg-cyan-500 text-sm font-bold mb-6">
+            </div>
+
+            <h2 id="lightbox-title"
+                class="text-4xl md:text-5xl font-black mb-6 leading-tight">
+            </h2>
+
+            <p id="lightbox-desc"
+               class="text-gray-300 text-lg leading-relaxed mb-8">
+            </p>
+
+            <div class="flex flex-wrap gap-4">
+
+                <div id="lightbox-kategori"
+                     class="px-5 py-2 rounded-full bg-indigo-600 font-semibold">
+                </div>
+
+                <div id="lightbox-date"
+                     class="px-5 py-2 rounded-full bg-white/10 backdrop-blur-xl">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
 </div>
 
 <style>
-.line-clamp-2 {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+
+.line-clamp-1{
+    overflow:hidden;
+    display:-webkit-box;
+    -webkit-line-clamp:1;
+    -webkit-box-orient:vertical;
 }
+
+.line-clamp-3{
+    overflow:hidden;
+    display:-webkit-box;
+    -webkit-line-clamp:3;
+    -webkit-box-orient:vertical;
+}
+
+.hero-title{
+    text-shadow:
+    0 0 20px rgba(59,130,246,.5),
+    0 0 40px rgba(59,130,246,.4),
+    0 0 80px rgba(59,130,246,.3);
+}
+
+@keyframes bgZoom{
+    0%{
+        transform:scale(1.05);
+    }
+    100%{
+        transform:scale(1.15);
+    }
+}
+
+.animate-bg{
+    animation:bgZoom 20s ease-in-out infinite alternate;
+}
+
+@keyframes float{
+    0%,100%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(-30px);
+    }
+}
+
+@keyframes float2{
+    0%,100%{
+        transform:translateY(0);
+    }
+    50%{
+        transform:translateY(30px);
+    }
+}
+
+.animate-float{
+    animation:float 8s ease-in-out infinite;
+}
+
+.animate-float2{
+    animation:float2 10s ease-in-out infinite;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
 </style>
 
 <script>
+
 let currentIndex = 0;
 let galleries = @json($galleries->items());
 
-function openLightbox(index) {
+function openLightbox(index){
+
     currentIndex = index;
+
     showImage();
-    document.getElementById('lightbox-modal').classList.remove('hidden');
+
+    const modal = document.getElementById('lightbox-modal');
+
+    modal.classList.remove('hidden');
+    modal.classList.add('flex');
+
     document.body.style.overflow = 'hidden';
 }
 
-function closeLightbox() {
-    document.getElementById('lightbox-modal').classList.add('hidden');
+function closeLightbox(){
+
+    const modal = document.getElementById('lightbox-modal');
+
+    modal.classList.remove('flex');
+    modal.classList.add('hidden');
+
     document.body.style.overflow = 'auto';
 }
 
-function showImage() {
+function showImage(){
+
     const gallery = galleries[currentIndex];
-    const img = document.getElementById('lightbox-img');
-    
-    // Update image with correct path
-    img.onload = () => {
-        img.style.transition = 'opacity 0.3s ease';
-        img.style.opacity = '1';
-    };
-    
-    img.onerror = () => {
-        img.src = '/images/bg/smp.png';
-    };
-    
-    img.src = '/storage/gallery/' + gallery.image;
-    
-    // Update overlay content
-    document.getElementById('lightbox-title').textContent = gallery.title;
-    document.getElementById('lightbox-desc').innerHTML = gallery.description ? gallery.description.replace(/\n/g, '<br>') : 'Tidak ada deskripsi.';
-    document.getElementById('lightbox-kategori').textContent = gallery.kategori || 'Lainnya';
-    document.getElementById('lightbox-date').innerHTML = '<i class="fas fa-calendar-alt mr-2"></i>' + new Date(gallery.created_at).toLocaleDateString('id-ID');
-    document.getElementById('lightbox-counter').textContent = (currentIndex + 1) + ' / ' + galleries.length;
-}
-    
-    // Update full description (no clamp)
-    document.getElementById('lightbox-desc').innerHTML = gallery.description ? gallery.description.replace(/\n/g, '<br>') : 'Tidak ada deskripsi.';
+
+    document.getElementById('lightbox-img').src =
+        '/storage/' + gallery.image;
+
+    document.getElementById('lightbox-title').textContent =
+        gallery.title;
+
+    document.getElementById('lightbox-desc').innerHTML =
+        gallery.description
+        ? gallery.description.replace(/\n/g, '<br>')
+        : 'Tidak ada deskripsi';
+
+    document.getElementById('lightbox-kategori').textContent =
+        gallery.kategori || 'Galeri';
+
+    document.getElementById('lightbox-date').innerHTML =
+        '<i class="fas fa-calendar-alt mr-2"></i>' +
+        new Date(gallery.created_at).toLocaleDateString('id-ID');
+
+    document.getElementById('lightbox-counter').textContent =
+        (currentIndex + 1) + ' / ' + galleries.length;
 }
 
-function shareImage() {
-    if (navigator.share) {
-        navigator.share({
-            title: document.getElementById('lightbox-title').textContent,
-            text: document.getElementById('lightbox-desc').textContent,
-            url: window.location.href
-        });
-    } else {
-        navigator.clipboard.writeText(window.location.href);
-        alert('Link disalin ke clipboard!');
-    }
-}
+function nextImage(){
 
-function nextImage() {
     currentIndex = (currentIndex + 1) % galleries.length;
+
     showImage();
 }
 
-function prevImage() {
+function prevImage(){
+
     currentIndex = (currentIndex - 1 + galleries.length) % galleries.length;
+
     showImage();
 }
 
-// Keyboard navigation
-document.addEventListener('keydown', function(e) {
-    if (document.getElementById('lightbox-modal').classList.contains('hidden')) return;
-    
-    if (e.key === 'Escape') closeLightbox();
-    if (e.key === 'ArrowRight') nextImage();
-    if (e.key === 'ArrowLeft') prevImage();
+document.addEventListener('keydown', function(e){
+
+    const modal = document.getElementById('lightbox-modal');
+
+    if(modal.classList.contains('hidden')) return;
+
+    if(e.key === 'Escape') closeLightbox();
+
+    if(e.key === 'ArrowRight') nextImage();
+
+    if(e.key === 'ArrowLeft') prevImage();
 });
 
-// Mobile swipe support
-let startX = 0;
-let currentTranslate = 0;
-let isDragging = false;
+document.getElementById('lightbox-modal')
+.addEventListener('click', function(e){
 
-const modal = document.getElementById('lightbox-modal');
-const imgContainer = modal.querySelector('div.relative');
-
-modal.addEventListener('touchstart', (e) => {
-    startX = e.touches[0].clientX;
-    isDragging = true;
-    imgContainer.style.transition = 'none';
-});
-
-modal.addEventListener('touchmove', (e) => {
-    if (!isDragging) return;
-    e.preventDefault();
-    const currentX = e.touches[0].clientX;
-    currentTranslate = currentX - startX;
-});
-
-modal.addEventListener('touchend', (e) => {
-    if (!isDragging) return;
-    isDragging = false;
-    
-    const threshold = 50;
-    if (currentTranslate > threshold) {
-        prevImage();
-    } else if (currentTranslate < -threshold) {
-        nextImage();
+    if(e.target === this){
+        closeLightbox();
     }
-    
-    imgContainer.style.transition = 'transform 0.3s ease';
-    imgContainer.style.transform = 'translateX(0)';
 });
 
-// Close on outside click
-document.getElementById('lightbox-modal').addEventListener('click', function(e) {
-    if (e.target === this) closeLightbox();
-});
-
-// Prevent zoom on double tap
-let lastTap = 0;
-modal.addEventListener('touchend', (e) => {
-    const now = new Date().getTime();
-    if (now - lastTap < 300) {
-        e.preventDefault();
-    }
-    lastTap = now;
-});
 </script>
 
 @endsection
-

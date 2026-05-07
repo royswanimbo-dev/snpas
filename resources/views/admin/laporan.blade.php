@@ -81,17 +81,17 @@
     </div>
 
     <!-- Export Button -->
-    <div class="mb-6">
-        <button onclick="window.print()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md transition duration-150 ease-in-out">
+    <div class="mb-6 flex flex-col sm:flex-row gap-3 sm:items-center print:hidden">
+        <button onclick="window.print()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg shadow-md transition duration-150 ease-in-out">
             <i class="fas fa-print mr-2"></i>Cetak Laporan
         </button>
-        <button onclick="exportToExcel()" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition duration-150 ease-in-out ml-2">
-            <i class="fas fa-file-excel mr-2"></i>Export Excel
-        </button>
+        <a href="{{ route('admin.laporan.export.excel') }}" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg shadow-md transition duration-150 ease-in-out inline-flex items-center justify-center">
+            <i class="fas fa-file-excel mr-2"></i>Export Excel (.xlsx)
+        </a>
     </div>
 
     <!-- Detail Table -->
-    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="bg-white rounded-lg shadow-md overflow-hidden print:shadow-none">
         <div class="px-6 py-4 border-b border-gray-200">
             <h2 class="text-xl font-semibold text-gray-800">Detail Pendaftar</h2>
         </div>
@@ -122,7 +122,7 @@
                                 {{ $pendaftar->status }}
                             </span>
                         </td>
-                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $pendaftar->created_at->format('d/m/Y') }}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{{ $pendaftar->created_at?->format('d/m/Y') }}</td>
                     </tr>
                     @empty
                     <tr>
@@ -160,21 +160,5 @@
     </div>
 </div>
 
-<script>
-function exportToExcel() {
-    // Simple CSV export (can be enhanced with proper Excel library)
-    let csv = 'No,Nama Lengkap,NISN,Sekolah Asal,Status,Tanggal Daftar\n';
-    @foreach($pendaftars as $index => $pendaftar)
-    csv += '{{ $index + 1 }},{{ $pendaftar->nama_lengkap }},{{ $pendaftar->nisn }},{{ $pendaftar->nama_sekolah }},{{ $pendaftar->status }},{{ $pendaftar->created_at->format('d/m/Y') }}\n';
-    @endforeach
-
-    const blob = new Blob([csv], { type: 'text/csv' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'laporan_ppdb_{{ date('Y-m-d') }}.csv';
-    a.click();
-    window.URL.revokeObjectURL(url);
-}
-</script>
 @endsection
+

@@ -1,6 +1,6 @@
 @extends('layouts.public')
 
-@section('title', 'APLIKASI PPDB SMPN 1 PIRIME - Pendaftaran Online')
+@section('title', 'WEBSITE PPDB SMPN 1 PIRIME - Pendaftaran Online')
 
 @section('content')
 
@@ -8,11 +8,11 @@
 <section class="relative py-20 sm:py-28 lg:py-32 overflow-hidden" ">
     <div class="absolute inset-0 bg-[url('/images/bg/smp.png')] bg-cover bg-center bg-no-repeat"></div>
     <div class="relative z-10 py-20 px-4 max-w-6xl mx-auto text-center sm:px-6">
-        <img src="{{ asset('images/logo/logo-removebg-preview.jpg') }}" 
-             alt="Logo APLIKASI PPDB SMPN 1 PIRIME"
+        <img src="{{ asset('images/logo/siswa-smp-sd.png') }}" 
+             alt="Logo WEBSITE PPDB SMPN 1 PIRIME"
              class="mx-auto h-24 w-24 md:h-32 md:w-32 lg:h-40 lg:w-40 rounded-3xl shadow-2xl mb-6 animate-float">
         <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 bg-gradient-to-r from-white to-blue-200 bg-clip-text text-transparent drop-shadow-2xl">
-            APLIKASI PPDB
+            WEBSITE PPDB
         </h1>
       <p class="text-lg sm:text-xl md:text-2xl lg:text-3xl text-blue-500 max-w-2xl mx-auto leading-relaxed mb-8">
     Penerimaan Peserta Didik Baru. <span class="text-yellow-400 font-bold">{{ date('Y') }}/{{ date('Y')+1 }}</span><br>
@@ -34,9 +34,9 @@
 <!-- CTA Section -->
 <section class="py-20 bg-white">
     <div class="max-w-4xl mx-auto px-4 text-center">
-        <img src="{{ asset('images/logo/logo-removebg-preview.jpg') }}" alt="Logo APLIKASI PPDB SMPN 1 PIRIME" class="mx-auto h-20 w-20 rounded-2xl shadow-xl mb-8">
+        <img src="{{ asset('images/logo/logo-removebg-preview.jpg') }}" alt="Logo WEBSITE PPDB SMPN 1 PIRIME" class="mx-auto h-20 w-20 rounded-2xl shadow-xl mb-8">
         <h2 class="text-4xl font-bold text-gray-800 mb-6">Siap Daftar PPDB SMPN 1 PIRIME?</h2>
-        <p class="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">Aplikasi PPDB berbasis web modern untuk pendaftaran siswa baru yang mudah, cepat, dan aman.</p>
+        <p class="text-xl text-gray-600 mb-10 max-w-2xl mx-auto">Website  PPDB berbasis web modern untuk pendaftaran siswa baru yang mudah, cepat, dan aman.</p>
         <div class="flex flex-col sm:flex-row gap-6 justify-center">
             <a href="{{ route('register.form') }}" 
                class="bg-gradient-to-r from-blue-600 to-indigo-600 text-white px-12 py-5 rounded-2xl font-bold text-xl shadow-2xl hover:shadow-3xl hover:scale-105 transition-all duration-300 flex items-center">

@@ -224,12 +224,18 @@ function showModernImage() {
   const kategori = document.getElementById('modern-kategori');
   const date = document.getElementById('modern-date span');
   
-  img.src = '{{ asset("storage") }}/' + gallery.image;
+  img.src = '{{ \Illuminate\Support\Facades\Storage::url($gallery->image) }}';
   title.textContent = gallery.title;
   desc.innerHTML = gallery.description ? gallery.description.replace(/\n/g, '<br>') : 'Tidak ada deskripsi.';
   kategori.textContent = gallery.kategori || 'Lainnya';
   date.textContent = new Date(gallery.created_at).toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+  // Set image using Storage::url base path (works regardless of stored value)
+  // If gallery.image already contains a full relative path, Storage::url will still resolve.
+  try {
+    img.src = '{{ \\Illuminate\\Support\\Facades\\Storage::url('"'"'"'"') }}'.replace(/\/%2F$/, '/');
+  } catch(e) {}
 }
+
 
 function nextModern() {
   currentModernIndex = (currentModernIndex + 1) % modernGalleries.length;

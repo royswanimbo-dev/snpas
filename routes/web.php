@@ -119,9 +119,13 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     // Laporan
     Route::get('/admin/laporan', [AdminController::class, 'laporan'])
         ->name('admin.laporan');
-    
+
+    Route::get('/admin/laporan/export-excel', [AdminController::class, 'exportLaporanExcel'])
+        ->name('admin.laporan.export.excel');
+
     // Pengaturan
     Route::get('/admin/pengaturan', [AdminController::class, 'pengaturan'])
+
         ->name('admin.pengaturan');
     Route::put('/admin/profil/update', [AdminController::class, 'updateProfil'])
         ->name('admin.profil.update');

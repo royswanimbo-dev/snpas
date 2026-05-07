@@ -7,7 +7,6 @@
 <!-- Hero Tentang Kami -->
 <section class="relative bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-700 text-white py-24 overflow-hidden">
     <div class="absolute inset-0 opacity-20 bg-[url('/images/tetang/tetang.png')] bg-cover bg-center"></div>
-
     <div class="relative max-w-7xl mx-auto px-6 lg:px-12 text-center">
         <h1 class="text-4xl md:text-6xl font-extrabold mb-6 animate-bounce">
             Tentang Kami
@@ -165,18 +164,21 @@
 <!-- Kepala Sekolah -->
 <section class="py-20 bg-white">
     <div class="max-w-5xl mx-auto px-6 text-center">
-@if($profile->foto_kepsek)
-            <img src="{{ asset('profiles/' . $profile->foto_kepsek) }}" 
-                 class="w-40 h-40 mx-auto rounded-full shadow-xl object-cover mb-6 border-4 border-blue-500">
-        @else
-            <img src="/images/galeri/kep injil.jpg" 
-                 class="w-40 h-40 mx-auto rounded-full shadow-xl object-cover mb-6 border-4 border-blue-500">
-        @endif
+        @php
+            $fotoDefault = '/images/galeri/kep injil.jpeg';
+            $fotoKepsek = $profile->foto_kepsek ? asset('storage/profiles/' . $profile->foto_kepsek) : $fotoDefault;
+        @endphp
+
+        <img
+            src="{{ $fotoKepsek }}"
+            class="w-40 h-40 mx-auto rounded-full shadow-xl object-cover mb-6 border-4 border-blue-500"
+            onerror="this.onerror=null;this.src='{{ $fotoDefault }}';"
+            alt="Kepala Sekolah {{ $profile->kepala_sekolah ?? '' }}"
+        >
 
         <h2 class="text-3xl font-bold text-gray-800 mb-2">
             Sambutan Kepala Sekolah
         </h2>
-        
         <p class="text-gray-600 italic max-w-3xl mx-auto leading-relaxed">
             "{{ $profile->sambutan_kepsek ?? 'Kami percaya bahwa pendidikan adalah jembatan menuju masa depan. Bersama guru, siswa, dan orang tua, kami membangun generasi Papua yang hebat, cerdas, dan berdaya saing.' }}"
         </p>
