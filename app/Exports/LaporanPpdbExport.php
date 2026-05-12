@@ -65,12 +65,13 @@ class LaporanPpdbExport implements FromCollection, WithHeadings, WithMapping, Wi
         return [];
     }
 
-    public function columnFormatting(): array
+    public function columnFormats(): array
     {
         return [
             'A' => DataType::TYPE_NUMERIC,
         ];
     }
+
 
     public function registerEvents(): array
     {

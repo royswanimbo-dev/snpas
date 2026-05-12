@@ -3,7 +3,7 @@
 @section('title', 'Dashboard Admin')
 
 @section('content')
-<div class="max-w-7xl mx-auto">
+    <div class="max-w-7xl mx-auto">
     <!-- Welcome Section -->
     <div class="bg-gradient-to-r from-blue-600 to-blue-800 rounded-lg shadow-lg p-8 mb-8 text-white">
         <div class="flex items-center justify-between">

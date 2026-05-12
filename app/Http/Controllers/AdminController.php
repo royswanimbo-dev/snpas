@@ -263,14 +263,47 @@ class AdminController extends Controller
         return redirect()->route('admin.pengumuman')->with('success', 'Pengumuman berhasil ' . $status . '.');
     }
 
+    // PRO: Update admin profile (name + photo) tersimpan di table `users`
+    public function updateProfile(Request $request)
+    {
+        $user = auth()->user();
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:5120',
+        ]);
+
+        $user->name = $request->name;
+
+        if ($request->hasFile('photo')) {
+            // hapus file lama (kalau ada)
+            if ($user->photo && Storage::disk('public')->exists($user->photo)) {
+                Storage::disk('public')->delete($user->photo);
+            }
+
+            $file = $request->file('photo');
+            $filename = time().'_'.$file->getClientOriginalName();
+            $path = $file->storeAs('profile', $filename, 'public');
+            $user->photo = $path;
+        }
+
+        $user->save();
+
+        return back()->with('success', 'Profil admin berhasil diperbarui!');
+    }
+
     public function pengaturan()
     {
         $profile = Profile::first();
         return view('admin.pengaturan', compact('profile'));
     }
 
-public function updateProfil(Request $request)
+    public function updateProfil(Request $request)
     {
+        // profile sekolah (table `profiles`)
+        // method ini tidak diubah.
+
+        
         $request->validate([
             'nama_sekolah' => 'required|string|max:255',
             'npsn' => 'nullable|string|max:20',
@@ -284,6 +317,7 @@ public function updateProfil(Request $request)
             'total_siswa' => 'nullable|integer|min:0',
             'total_guru' => 'nullable|integer|min:0',
             'total_prestasi' => 'nullable|integer|min:0',
+            'ppdb_open' => 'nullable|boolean',
             'foto_kepsek' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ]);
 
@@ -304,10 +338,13 @@ public function updateProfil(Request $request)
 
         // Prepare data - convert misi line breaks to array
         $data = $request->except(['foto_kepsek']);
-        
+
+        // pastikan boolean sesuai checkbox (0/1)
+        $data['ppdb_open'] = $request->boolean('ppdb_open');
+
         // Save sambutan_kepsek
         $data['sambutan_kepsek'] = $data['sambutan_kepsek'] ?? $request->sambutan_kepsek ?? '';
-        
+
         // Convert misi to JSON array
         if (isset($data['misi']) && !empty($data['misi'])) {
             $misiLines = array_filter(array_map('trim', explode("\n", $data['misi'])));

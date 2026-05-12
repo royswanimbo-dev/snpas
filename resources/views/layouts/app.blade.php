@@ -154,10 +154,18 @@
                 @auth
                 <div class="relative" id="user-dropdown">
                     <button onclick="document.getElementById('user-menu').classList.toggle('hidden')" class="flex items-center space-x-2 bg-white/10 hover:bg-white/20 text-white px-4 py-2 rounded-xl transition-all border border-white/10">
-                        @if(auth()->user()->pendaftar?->foto_profil)
-                            <img src="{{ asset('storage/' . auth()->user()->pendaftar->foto_profil) }}" alt="Foto Profil" class="w-8 h-8 rounded-full object-cover border-2 border-white/30 shadow-lg">
+                        @if(auth()->user()->role === 'admin')
+                            @if(auth()->user()->photo)
+                                <img src="{{ asset('storage/' . auth()->user()->photo) }}" alt="Foto Profil" class="w-8 h-8 rounded-full object-cover border-2 border-white/30 shadow-lg">
+                            @else
+                                <div class="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center font-bold text-sm shadow-lg">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
+                            @endif
                         @else
-                            <div class="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center font-bold text-sm shadow-lg">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
+                            @if(auth()->user()->pendaftar?->foto_profil)
+                                <img src="{{ asset('storage/' . auth()->user()->pendaftar->foto_profil) }}" alt="Foto Profil" class="w-8 h-8 rounded-full object-cover border-2 border-white/30 shadow-lg">
+                            @else
+                                <div class="w-8 h-8 bg-gradient-to-br from-blue-400 to-purple-500 rounded-full flex items-center justify-center font-bold text-sm shadow-lg">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
+                            @endif
                         @endif
                         <span class="hidden sm:inline font-medium text-sm">{{ auth()->user()->name }}</span>
                         <i class="fas fa-chevron-down text-xs opacity-70"></i>
@@ -240,6 +248,9 @@
                         <a href="{{ route('admin.pengaturan') }}" class="block px-4 py-2 rounded-lg text-sm {{ request()->routeIs('admin.pengaturan') ? 'text-blue-300 bg-white/10' : 'text-slate-400 hover:text-white hover:bg-white/5' }}">Pengaturan Umum</a>
                     </div>
                 </div>
+                 <a href="{{ route('admin.profile') }}" class="sidebar-link flex items-center px-4 py-3 rounded-xl {{ request()->routeIs('admin.profile') ? 'active text-white' : 'text-slate-300 hover:text-white' }}">
+                    <i class="fas fa-user w-5 mr-3"></i><span>Edit Profile Admin </span>
+                </a>
             </nav>
         </aside>
         @else

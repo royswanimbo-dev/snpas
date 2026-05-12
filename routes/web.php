@@ -13,7 +13,7 @@ use App\Http\Controllers\PPDBController;
 
 // Halaman Home
 Route::get('/', [PPDBController::class, 'home'])->name('home');
-
+Route::get('/admin-profile', [AdminController::class, 'profile'])->name('admin-profile');
 // Profil Sekolah
 Route::get('/profil', [PPDBController::class, 'profil'])->name('profil');
 
@@ -34,7 +34,12 @@ Route::get('/kontak', [PPDBController::class, 'kontak'])->name('kontak');
 Route::get('/guru', [PPDBController::class, 'guru'])->name('guru');
 
 // PPDB
-Route::get('/ppdb', [PPDBController::class, 'ppdb'])->name('ppdb');
+Route::get('/ppdb', function () {
+    $res = \App\Http\Controllers\PPDBGate::ensurePpdbOpen();
+    if ($res) return $res;
+
+    return app(\App\Http\Controllers\PPDBController::class)->ppdb();
+})->name('ppdb');
 
 /*
 |--------------------------------------------------------------------------
@@ -42,8 +47,17 @@ Route::get('/ppdb', [PPDBController::class, 'ppdb'])->name('ppdb');
 |--------------------------------------------------------------------------
 */
 
-Route::get('/register', [AuthController::class, 'showRegister'])->name('register.form');
-Route::post('/register', [AuthController::class, 'register'])->name('register');
+Route::get('/register', function () {
+    $res = \App\Http\Controllers\PPDBGate::ensurePpdbOpen();
+    if ($res) return $res;
+    return app(\App\Http\Controllers\AuthController::class)->showRegister();
+})->name('register.form');
+
+Route::post('/register', function (\Illuminate\Http\Request $request) {
+    $res = \App\Http\Controllers\PPDBGate::ensurePpdbOpen();
+    if ($res) return $res;
+    return app(\App\Http\Controllers\AuthController::class)->register($request);
+})->name('register');
 
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login.form');
 Route::post('/login', [AuthController::class, 'login'])->name('login');
@@ -64,12 +78,18 @@ Route::middleware(['auth', 'role:siswa'])->group(function () {
         ->name('siswa.dashboard');
 
     // Formulir PPDB
-    Route::get('/siswa/pendaftaran', [SiswaController::class, 'formPendaftaran'])
-        ->name('siswa.pendaftaran');
+    Route::get('/siswa/pendaftaran', function () {
+        $res = \App\Http\Controllers\PPDBGate::ensurePpdbOpen();
+        if ($res) return $res;
+        return app(\App\Http\Controllers\SiswaController::class)->formPendaftaran();
+    })->name('siswa.pendaftaran');
 
     // Simpan data PPDB
-    Route::post('/siswa/pendaftaran/simpan', [SiswaController::class, 'simpanPendaftaran'])
-        ->name('siswa.pendaftaran.simpan');
+    Route::post('/siswa/pendaftaran/simpan', function (\Illuminate\Http\Request $request) {
+        $res = \App\Http\Controllers\PPDBGate::ensurePpdbOpen();
+        if ($res) return $res;
+        return app(\App\Http\Controllers\SiswaController::class)->simpanPendaftaran($request);
+    })->name('siswa.pendaftaran.simpan');
 
     // Upload Berkas
     Route::get('/siswa/ppdb/berkas', [SiswaController::class, 'berkas'])
@@ -128,7 +148,17 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 
         ->name('admin.pengaturan');
     Route::put('/admin/profil/update', [AdminController::class, 'updateProfil'])
+
         ->name('admin.profil.update');
+
+    // PRO: Halaman Admin Profile (tampilkan form)
+    Route::get('/admin/profile', function () {
+        return view('admin.profile');
+    })->name('admin.profile');
+
+    // PRO: Update admin profile (name + photo tersimpan di `users`)
+    Route::post('/admin/profile', [AdminController::class, 'updateProfile'])
+        ->name('admin.profile.update');
 
     // Pengumuman Management
     Route::get('/admin/pengumuman', [AdminController::class, 'pengumuman'])

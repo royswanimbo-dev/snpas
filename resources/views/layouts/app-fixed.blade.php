@@ -27,7 +27,13 @@
                 @auth
                 <div class="dropdown dropstart">
                     <button class="btn btn-secondary dropdown-toggle bg-blue-700 hover:bg-blue-800 text-white border-0 px-4 py-2 rounded-lg shadow-md flex items-center space-x-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <div class="w-8 h-8 bg-white text-blue-700 rounded-full flex items-center justify-center font-bold">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</div>
+                        <div class="w-8 h-8 rounded-full overflow-hidden bg-white/20 flex items-center justify-center">
+                            @if(auth()->user()->photo)
+                                <img src="{{ asset('storage/' . auth()->user()->photo) }}" class="w-full h-full object-cover" alt="Foto admin">
+                            @else
+                                <span class="text-blue-700 font-bold">{{ strtoupper(substr(auth()->user()->name, 0, 1)) }}</span>
+                            @endif
+                        </div>
                         <span>{{ auth()->user()->name }}</span>
                     </button>
                     <ul class="dropdown-menu shadow-lg">

@@ -247,11 +247,15 @@ $misiList = is_array($profile->misi) ? $profile->misi : json_decode($profile->mi
 
                         <div class="flex items-center gap-6">
 
+                            <!-- Fallback value saat checkbox OFF (value 0 tetap terkirim) -->
+                            <input type="hidden" name="ppdb_open" value="0">
+
                             <label class="relative inline-flex items-center cursor-pointer">
 
                                 <input type="checkbox"
                                     name="ppdb_open"
                                     value="1"
+                                    id="ppdb_open_checkbox"
                                     {{ old('ppdb_open', $profile->ppdb_open ?? 1) ? 'checked' : '' }}
                                     class="sr-only peer">
 
@@ -261,11 +265,11 @@ $misiList = is_array($profile->misi) ? $profile->misi : json_decode($profile->mi
 
                             <div>
 
-                                <h3 class="text-3xl font-black">
+                                <h3 class="text-3xl font-black" id="ppdb_open_label">
                                     {{ old('ppdb_open', $profile->ppdb_open ?? 1) ? '✅ Dibuka' : '❌ Ditutup' }}
                                 </h3>
 
-                                <p class="text-emerald-100 text-lg">
+                                <p class="text-emerald-100 text-lg" id="ppdb_open_desc">
                                     Pendaftaran siswa aktif
                                 </p>
 
