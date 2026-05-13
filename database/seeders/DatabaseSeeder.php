@@ -13,11 +13,14 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
-
+        // Admin default (untuk login dashboard admin)
         User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'name' => 'Admin',
+            'email' => 'adminpirime99@gmail.com',
+            'password' => \Illuminate\Support\Facades\Hash::make('Admin12399'),
+            'role' => 'admin',
         ]);
+
+        // User::factory(10)->create();
     }
 }
